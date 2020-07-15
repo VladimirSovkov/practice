@@ -1,0 +1,12 @@
+D:\2 course\Practic\DBTest\bin\Debug\DBTest.exe.config
+D:\2 course\Practic\DBTest\bin\Debug\DBTest.exe
+D:\2 course\Practic\DBTest\bin\Debug\DBTest.pdb
+D:\2 course\Practic\DBTest\bin\Debug\EntityFramework.dll
+D:\2 course\Practic\DBTest\bin\Debug\EntityFramework.SqlServer.dll
+D:\2 course\Practic\DBTest\bin\Debug\EntityFramework.xml
+D:\2 course\Practic\DBTest\bin\Debug\EntityFramework.SqlServer.xml
+D:\2 course\Practic\DBTest\obj\Debug\DBTest.csprojAssemblyReference.cache
+D:\2 course\Practic\DBTest\obj\Debug\DBTest.csproj.CoreCompileInputs.cache
+D:\2 course\Practic\DBTest\obj\Debug\DBTest.csproj.CopyComplete
+D:\2 course\Practic\DBTest\obj\Debug\DBTest.exe
+D:\2 course\Practic\DBTest\obj\Debug\DBTest.pdb
