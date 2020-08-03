@@ -2613,17 +2613,18 @@
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Infrastructure/1.0.0": {
+      "DataBase/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "3.1.6"
+          "Microsoft.EntityFrameworkCore": "3.1.6",
+          "Parse": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/Infrastructure.dll": {}
+          "bin/placeholder/DataBase.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Infrastructure.dll": {}
+          "bin/placeholder/DataBase.dll": {}
         }
       },
       "Parse/1.0.0": {
@@ -8506,10 +8507,10 @@
         "system.xml.xmlserializer.nuspec"
       ]
     },
-    "Infrastructure/1.0.0": {
+    "DataBase/1.0.0": {
       "type": "project",
-      "path": "../Infrastructure/Infrastructure.csproj",
-      "msbuildProject": "../Infrastructure/Infrastructure.csproj"
+      "path": "../DataBase/DataBase.csproj",
+      "msbuildProject": "../DataBase/DataBase.csproj"
     },
     "Parse/1.0.0": {
       "type": "project",
@@ -8519,8 +8520,8 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.0": [
+      "DataBase >= 1.0.0",
       "EntityFramework >= 6.4.4",
-      "Infrastructure >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 3.1.6",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.6",
       "Microsoft.Extensions.Logging.Debug >= 3.0.0",
@@ -8561,8 +8562,8 @@
       "frameworks": {
         "netcoreapp3.0": {
           "projectReferences": {
-            "D:\\2 course\\practice\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "D:\\2 course\\practice\\Infrastructure\\Infrastructure.csproj"
+            "D:\\2 course\\practice\\DataBase\\DataBase.csproj": {
+              "projectPath": "D:\\2 course\\practice\\DataBase\\DataBase.csproj"
             },
             "D:\\2 course\\practice\\Parse\\Parse.csproj": {
               "projectPath": "D:\\2 course\\practice\\Parse\\Parse.csproj"

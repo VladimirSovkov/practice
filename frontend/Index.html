@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>CurrencyRate</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="assets/JQuery/jqScript.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header_inner">
+                <div class="header_logo">
+                    CurrancyRate
+                </div>
+                <nav class="header_nav">
+                    <a class="header_nav_text" href="#">Home</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <form action="" class="parameters">
+                <p class="parameter_headers" id="parameter_headers">Выберите источник:</p>
+                <select class="source_selection" id="select_source"></select>
+                <p class="date_added_currency_rate">Выберите год</p>
+                <select class="select_date_added_currency_rate" id="select_date"></select>
+                <p class="parameter_headers">В какую валюту переводить:</p>
+                <select class="source_selection" id="currency_selector"></select>
+                <input type="number" class="input_value" name="" id="rate" value="0"/>
+                <input type="submit" class="input_button" value="Конвертировать" onclick="GetValueRate()"/>
+            </form>
+            <div class="result_container">
+                <p class="result_value">0.00 USD</p>
+            </div>
+            <a href="https://localhost:44342/GetAllCurrency">GetAllCurrency</a>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer_inner">
+                <p class="footer_text">CurrencyRate</p>
+                <p class="footer_text_test">@TestVersion</p>
+        
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

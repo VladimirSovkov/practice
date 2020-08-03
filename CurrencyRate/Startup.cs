@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using API;
+using DataBase;
+using DataBase.Infrastructure;
 
-namespace CurrencyRate
+namespace API
 {
     public class Startup
     {
@@ -31,6 +25,9 @@ namespace CurrencyRate
             services.AddDbContext<AppDBContext>(options =>
                 options.UseSqlServer(connection));
             services.AddControllersWithViews();
+            services.AddScoped<CurrencyRateRepository>();
+            services.AddScoped<CurrencyRepository>();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +47,7 @@ namespace CurrencyRate
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthorization();
 
@@ -59,13 +57,6 @@ namespace CurrencyRate
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            
-
-            using (var scope  = app.ApplicationServices.CreateScope())
-            {
-                AppDBContext content = scope.ServiceProvider.GetRequiredService<AppDBContext>();
-                DbObjectcs.Initial(app);
-            }
         }
     }
 }

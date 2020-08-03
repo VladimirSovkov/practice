@@ -7,8 +7,25 @@ using System.Xml;
 
 namespace Parse.Infrastructure
 {
-    class ParseXML : IParseXML
+    public class ParseXML : IParseXML
     {
+        private string GetCorrectNumberToString(string number)
+        {
+            if (number.Length == 1)
+            {
+                number = "0" + number;
+            }
+
+            return number;
+        }
+        private string GetCorrectDateToString(string date)
+        {
+            DateTime dateTime = Convert.ToDateTime(date);
+            date = GetCorrectNumberToString(dateTime.Day.ToString()) + ".";
+            date += GetCorrectNumberToString(dateTime.Month.ToString()) + ".";
+            date += dateTime.Year.ToString();
+            return date;
+        }
         private XMLModel GetDataOneCurrency(ref XmlTextReader reader)
         {
             reader.Read();
@@ -32,21 +49,17 @@ namespace Parse.Infrastructure
                             break;
                         case "description":
                             reader.Read();//add exception 
-                            double number = 0;
+                            decimal number = 0;
                             try
                             {
-                                //если дробная часть разделяется запятой то выполняется  условие
-                                //иначе 2
-                                bool result = double.TryParse(reader.Value, out number);
+                                bool result = decimal.TryParse(reader.Value, out number);
                                 if (!result)
-                                    curency.Rate = double.Parse(reader.Value, System.Globalization.CultureInfo.InvariantCulture);
+                                    curency.Rate = decimal.Parse(reader.Value, System.Globalization.CultureInfo.InvariantCulture);
                             }
                             catch (FormatException)
                             {
                                 Console.WriteLine("Сannot parse the value rate. The string contains characters!");
                             }
-
-                            curency.Rate = double.Parse(reader.Value, System.Globalization.CultureInfo.InvariantCulture);
                             count++;
                             break;
                     }
@@ -79,22 +92,35 @@ namespace Parse.Infrastructure
             throw new FormatException("could not find the rate of the ruble");
         }
 
-        public IEnumerable<XMLModel> GetData(string url)
+        public IEnumerable<XMLModel> GetData(string dateParse)
         {
+            string url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" + GetCorrectDateToString(dateParse);
             XMLModel CurencyRub = GetValueRuble(url);
             XmlTextReader reader = new XmlTextReader(url);
-            List<XMLModel> outputData = new List<XMLModel> { new XMLModel { } };
+            List<XMLModel> outputData = new List<XMLModel>();
+            DateTime date = new DateTime();
             while (reader.Read())
             {
                 XMLModel data;
+                if (reader.NodeType == XmlNodeType.Element && reader.Name == "date")
+                {
+                    reader.Read();
+                    try
+                    {
+                        date = Convert.ToDateTime(reader.Value);
+                    }
+                    catch (FormatException)
+                    {
+                        throw new FormatException("could not convert date string to type DateTime");
+                    }
+                }
                 if (reader.NodeType == XmlNodeType.Element && reader.Name == "item")
                 {
-                    //нашли блок с информацией!
                     data = GetDataOneCurrency(ref reader);
+                    data.Date = date;
                     data.Rate = data.Rate / CurencyRub.Rate;
                     outputData.Add(data);
                     string text = data.CurrencyId + "\t" + data.Rate + "\t" + data.Name + "\n";
-                    Console.WriteLine(text);
                 }
             }
             return  outputData;

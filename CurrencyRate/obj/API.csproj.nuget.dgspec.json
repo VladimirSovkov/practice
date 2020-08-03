@@ -32,8 +32,8 @@
         "frameworks": {
           "netcoreapp3.0": {
             "projectReferences": {
-              "D:\\2 course\\practice\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "D:\\2 course\\practice\\Infrastructure\\Infrastructure.csproj"
+              "D:\\2 course\\practice\\DataBase\\DataBase.csproj": {
+                "projectPath": "D:\\2 course\\practice\\DataBase\\DataBase.csproj"
               },
               "D:\\2 course\\practice\\Parse\\Parse.csproj": {
                 "projectPath": "D:\\2 course\\practice\\Parse\\Parse.csproj"
@@ -93,14 +93,14 @@
         }
       }
     },
-    "D:\\2 course\\practice\\Infrastructure\\Infrastructure.csproj": {
+    "D:\\2 course\\practice\\DataBase\\DataBase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\2 course\\practice\\Infrastructure\\Infrastructure.csproj",
-        "projectName": "Infrastructure",
-        "projectPath": "D:\\2 course\\practice\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "D:\\2 course\\practice\\DataBase\\DataBase.csproj",
+        "projectName": "DataBase",
+        "projectPath": "D:\\2 course\\practice\\DataBase\\DataBase.csproj",
         "packagesPath": "C:\\Users\\vovch\\.nuget\\packages\\",
-        "outputPath": "D:\\2 course\\practice\\Infrastructure\\obj\\",
+        "outputPath": "D:\\2 course\\practice\\DataBase\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -120,7 +120,11 @@
         },
         "frameworks": {
           "netstandard2.0": {
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\2 course\\practice\\Parse\\Parse.csproj": {
+                "projectPath": "D:\\2 course\\practice\\Parse\\Parse.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

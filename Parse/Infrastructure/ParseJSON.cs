@@ -12,17 +12,41 @@ namespace Parse.Infrastructure
 {
     public class ParseJSON : IParseJSON
     {
-        public IEnumerable<JSONModel> GetData(string url)
+        private string GetCorrectNumberToString(string number)
         {
-            //List<JSONModel> outData = new List<JSONModel> { new JSONModel { }  };
-            using (var w = new WebClient())
+            if (number.Length == 1)
+            {
+                number = "0" + number;
+            }
+
+            return number;
+        }
+        private string GetCorrectDateToString(string date)
+        {
+            //try
+            //{
+                DateTime dateTime = Convert.ToDateTime(date);
+                string year = dateTime.Year.ToString();
+                string month = GetCorrectNumberToString(dateTime.Month.ToString());
+                string day = GetCorrectNumberToString(dateTime.Day.ToString());
+                date = year + month + day;
+            //}
+            //catch (Exception)
+            //{
+            //    throw new ArgumentException("incorrect");
+            //}
+
+            return date;
+        }
+        public IEnumerable<JSONModel> GetData(string date)
+        {
+            string url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=" + GetCorrectDateToString(date) + "&json";
+            using (var webClient = new WebClient())
             {
                 JSONModel DataRub = new JSONModel();
                 var json_data = string.Empty;
-                json_data = w.DownloadString(url);
-                //Console.WriteLine(json_data);
+                json_data = webClient.DownloadString(url);
                 var curency = JsonConvert.DeserializeObject<List<JSONModel>>(json_data);
-                Console.WriteLine(Convert.ToString(curency[0].r030) + " " + curency[0].txt + " " + curency[0].Rate + " " + curency[0].cc + " " + curency[0].exchangedate);
                 foreach (JSONModel a in curency)
                 {
                     if (a.cc == "RUB")
@@ -35,7 +59,6 @@ namespace Parse.Infrastructure
                 foreach (JSONModel a in curency)
                 {
                     a.Rate = a.Rate / DataRub.Rate;
-                    Console.WriteLine(Convert.ToString(a.r030) + " " + a.txt + " " + a.Rate + " " + a.cc + " " + a.exchangedate);
                 }
                 return curency;
             }

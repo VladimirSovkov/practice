@@ -1,6 +1,4 @@
-using System;
-
-namespace CurrencyRate.Models
+namespace API.Models
 {
     public class ErrorViewModel
     {
