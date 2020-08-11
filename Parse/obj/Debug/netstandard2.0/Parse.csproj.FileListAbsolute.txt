@@ -1,9 +1,0 @@
-D:\2 course\practice\Parse\bin\Debug\netstandard2.0\Parse.deps.json
-D:\2 course\practice\Parse\bin\Debug\netstandard2.0\Parse.dll
-D:\2 course\practice\Parse\obj\Debug\netstandard2.0\Parse.csprojAssemblyReference.cache
-D:\2 course\practice\Parse\obj\Debug\netstandard2.0\Parse.AssemblyInfoInputs.cache
-D:\2 course\practice\Parse\obj\Debug\netstandard2.0\Parse.AssemblyInfo.cs
-D:\2 course\practice\Parse\obj\Debug\netstandard2.0\Parse.csproj.CoreCompileInputs.cache
-D:\2 course\practice\Parse\bin\Debug\netstandard2.0\Parse.pdb
-D:\2 course\practice\Parse\obj\Debug\netstandard2.0\Parse.dll
-D:\2 course\practice\Parse\obj\Debug\netstandard2.0\Parse.pdb
