@@ -51,5 +51,10 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
         {
             return _dbContext.CurrencyRate.Where(s => s.Source == source).Where(d => d.Date == date).Select(c => c.CurrencyId).Distinct();
         }
+
+        public IEnumerable<string> GetSource()
+        {
+            return _dbContext.CurrencyRate.Select(s => s.Source).Distinct();
+        }
     }
 }

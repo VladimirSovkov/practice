@@ -7,6 +7,7 @@ namespace CurrancyRate.Domain.CurrencyRateModel
     public interface ICurrencyRate
     {
         CurrencyRate GetCurrencyRate(DateTime date, string source);
+        IEnumerable<string> GetSource();
         IEnumerable<DateTime> GetAvailableSourceDates(string source);
         void AddArrayElements(List<CurrencyRate> arrayCurrencyRate);
         decimal GetСurrencyValue(string source, DateTime date, string currency);

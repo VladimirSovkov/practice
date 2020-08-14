@@ -6,7 +6,7 @@ namespace CurrencyRate.IntegrationTests
     {
         protected override void SetUp()
         {
-            Driver = new TestDriver(typeof(AdminApiFeature));
+            Driver = new TestDriver(typeof(AdminApiStartup));
             Runner = new TestRunner(Driver);
             Driver.SeedDatabase();
         }

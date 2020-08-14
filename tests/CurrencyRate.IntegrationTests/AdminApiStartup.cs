@@ -9,9 +9,9 @@ using CurrencyRate.IntegrationTests.TestKit;
 
 namespace CurrencyRate.IntegrationTests
 {
-    public class ApiStartup : API.Startup
+    public class AdminApiStartup : API.Startup
     {
-        public ApiStartup(IConfiguration configuration, IHostingEnvironment env) : base(configuration, env)
+        public AdminApiStartup(IConfiguration configuration, IWebHostEnvironment env) : base(configuration, env)
         {
         }
 
@@ -21,7 +21,7 @@ namespace CurrencyRate.IntegrationTests
             services.AddDbContext<CurrencyRateContext>(
                 options => options
                     .UseInMemoryDatabase(dbName)
-                    .ConfigureWarnings(x => x.Throw(RelationalEventId.QueryClientEvaluationWarning)));
+                    .ConfigureWarnings(x => x.Throw(RelationalEventId.QueryPossibleUnintendedUseOfEqualsWarning)));
         }
 
         public override void AddServices(IServiceCollection services)

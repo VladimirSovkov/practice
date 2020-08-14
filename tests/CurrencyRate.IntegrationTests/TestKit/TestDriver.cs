@@ -28,7 +28,7 @@ namespace CurrencyRate.IntegrationTests.TestKit
                 .Build();
 
             var webHostBuilder = new WebHostBuilder()
-                .UseStartup(startupType)
+                .UseStartup<AdminApiStartup>()
                 .UseEnvironment(environment)
                 .UseConfiguration(configuration);
 
@@ -63,6 +63,34 @@ namespace CurrencyRate.IntegrationTests.TestKit
         {
             _client.Dispose();
             _server.Dispose();
+        }
+
+        public async Task<TResponse> HttpClientGetAsync<TResponse>(
+            string requestUri, 
+            HttpStatusCode statusCode = HttpStatusCode.OK, 
+            IReadOnlyDictionary<string, string> headers = null)
+        {
+            SetRequestHeaders(headers);
+            var response = await _client.GetAsync(requestUri);
+            if (response.StatusCode != statusCode)
+            {
+                throw new HttpRequestException($"Status code: {response.StatusCode}");
+            }
+            string responseString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<TResponse>(responseString);
+        }
+
+        private void SetRequestHeaders(IReadOnlyDictionary<string, string> headers)
+        {
+            if (headers == null)
+            {
+                return;
+            }
+
+            foreach (string headerName in headers.Keys)
+            {
+                _client.DefaultRequestHeaders.Add(headerName, headers[headerName]);
+            }
         }
     }
 }
