@@ -12,7 +12,7 @@ namespace CurrencyRate.IntegrationTests.StepDefinitions
             this ITestRunner testRunner, 
             List<DateTimeDto> expectedDto)
         {
-            List<DateTimeDto> actualDto = await testRunner.Driver.HttpClientGetAsync<List<DateTimeDto>>($"v1/сurrencyRate/getDate");
+            List<SourceNameDto> actualDto = await testRunner.Driver.HttpClientGetAsync<List<SourceNameDto>>($"v1/currencyRate");
             actualDto.Should().BeEquivalentTo(expectedDto);
         }
     }

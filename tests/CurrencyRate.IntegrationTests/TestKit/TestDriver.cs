@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -71,6 +72,7 @@ namespace CurrencyRate.IntegrationTests.TestKit
             IReadOnlyDictionary<string, string> headers = null)
         {
             SetRequestHeaders(headers);
+            //_client.DefaultRequestHeaders.Add();
             var response = await _client.GetAsync(requestUri);
             if (response.StatusCode != statusCode)
             {
@@ -82,6 +84,8 @@ namespace CurrencyRate.IntegrationTests.TestKit
 
         private void SetRequestHeaders(IReadOnlyDictionary<string, string> headers)
         {
+            //_client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Mobile Safari/537.36");
+            //_client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
             if (headers == null)
             {
                 return;

@@ -1,7 +1,9 @@
 ﻿using CurrancyRate.Domain.CurrencyRateModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
 {
@@ -52,9 +54,9 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
             return _dbContext.CurrencyRate.Where(s => s.Source == source).Where(d => d.Date == date).Select(c => c.CurrencyId).Distinct();
         }
 
-        public IEnumerable<string> GetSource()
+        public Task<List<string>> GetSource()
         {
-            return _dbContext.CurrencyRate.Select(s => s.Source).Distinct();
+            return _dbContext.CurrencyRate.Select(s => s.Source).Distinct().ToListAsync();
         }
     }
 }

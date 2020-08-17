@@ -5,12 +5,13 @@ using System;
 using System.Linq;
 using CurrencyRate.API.Dto;
 using CurrencyRate.API.Mappers;
+using System.Threading.Tasks;
 
 namespace CurrencyRate.API.Controllers
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
-    [Route("v{version:apiVersion}/сurrencyRate")]
+    [Route("v{version:apiVersion}/currencyRate")]
     [Produces("application/json")]
     public class CurrencRateController : Controller
     {
@@ -21,11 +22,12 @@ namespace CurrencyRate.API.Controllers
             _currencyRate = currencyRate;
         }
 
-        [HttpGet("getSource")]
-        public List<string> GetSource()
+        [HttpGet]
+        public async Task<List<SourceNameDto>> GetSource()
         {
             //"Ukrainian bank"
-            return _currencyRate.GetSource().ToList();
+            List<string> listOfSource = await _currencyRate.GetSource();
+            return listOfSource.Map();
         }
 
         [HttpGet("getDate")]
@@ -45,12 +47,13 @@ namespace CurrencyRate.API.Controllers
         }
 
         [HttpGet("GetCurrencyValue")]
-        public decimal GetCurrencyValue()//add string source, DateTime date, sring currency,  decimal value
+        public CurrencyValueDto GetCurrencyValue()//add string source, DateTime date, sring currency,  decimal value
         {
             DateTime date = new DateTime(2020,03,20);
             string source = "Ukrainian bank";
             string currency = "USD";
-            return _currencyRate.GetСurrencyValue(source, date, currency);
+            decimal listOfDecimal = _currencyRate.GetСurrencyValue(source, date, currency);
+            return listOfDecimal.Map();
         }
     }
 }
