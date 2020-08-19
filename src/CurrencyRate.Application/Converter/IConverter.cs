@@ -1,7 +1,7 @@
 ﻿namespace CurrencyRate.Application.Converter
 {
-    interface IConverter
+    public interface IConverter
     {
-        decimal CalculateAmount(decimal rate, decimal value);
+        decimal CalculateAmount(decimal fromRate, decimal toRate, decimal value);
     }
 }

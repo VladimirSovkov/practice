@@ -3,7 +3,6 @@
   "profiles": {
     "CurrencyRate": {
       "commandName": "Project",
-      "launchUrl": "v1.0/values",
       "applicationUrl": "http://localhost:4401"
     }
   }

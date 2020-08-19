@@ -84,8 +84,6 @@ namespace CurrencyRate.IntegrationTests.TestKit
 
         private void SetRequestHeaders(IReadOnlyDictionary<string, string> headers)
         {
-            //_client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Mobile Safari/537.36");
-            //_client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
             if (headers == null)
             {
                 return;

@@ -1,6 +1,7 @@
 ﻿using CurrencyRate.IntegrationTests.TestKit;
 using System.Threading.Tasks;
 using CurrencyRate.Infrastructure.Data;
+using CurrencyRate.IntegrationTests.ObjectMothers;
 
 namespace CurrencyRate.IntegrationTests
 {
@@ -14,9 +15,11 @@ namespace CurrencyRate.IntegrationTests
         }
         public async Task Seed()
         {
-            // TODO: Заполнение БД предустановленными данными, например списком валют
-            
-            
+            //Заполнение БД предустановленными данными
+            _context.Currency.AddRange(Currencies.currencyList);
+            _context.SaveChanges();
+
+            _context.CurrencyRate.AddRange(CurrencyRates.currencyRateList);
             await _context.SaveChangesAsync();
         }
     }

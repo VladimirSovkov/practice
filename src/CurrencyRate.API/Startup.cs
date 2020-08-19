@@ -4,12 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CurrencyRate.Infrastructure.Startup;
 using System;
+using System.Reflection;
 using CurrencyRate.Infrastructure.Data;
 using CurrencyRate.Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Microsoft.FeatureManagement;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CurrencyRate.API
 {
@@ -17,18 +16,19 @@ namespace CurrencyRate.API
     {
         private readonly IWebHostEnvironment _env;  
         public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup( IConfiguration configuration, IWebHostEnvironment env )
         {
             _env = env;
             Configuration = configuration;
         }
 
-        public virtual void Configure(IApplicationBuilder app)
+        public virtual void Configure( IApplicationBuilder app)
         {
+            app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvcWithDefaultRoute();
         }
         
-        IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
+        IServiceProvider IStartup.ConfigureServices( IServiceCollection services )
         {
             AddServices(services);
 
@@ -37,41 +37,25 @@ namespace CurrencyRate.API
 
         public virtual void AddServices(IServiceCollection services)
         {
-            ConfigureDatabase(services);
-            services.AddFeatureManagement();
+            ConfigureDatabase( services );
             services.AddControllers();
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.ReportApiVersions = true;
-                });
             services
                 .AddBaseServices()
                 .AddApplication()
                 .AddMvcCore(options => options.EnableEndpointRouting = false)
-
-                .AddNewtonsoftJson(
-                options =>
-                {
-                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                })
                 .AddNewtonsoftJson(options =>
-                {
-                    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                     options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                });
-
-
-            
-
-
+                    {
+                        options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;   
+                    })
+            .AddApplicationPart( Assembly.Load( new AssemblyName( "CurrencyRate.API" )) );
+            services.AddCors();
         }
 
-        public virtual void ConfigureDatabase(IServiceCollection services)
+        public virtual void ConfigureDatabase( IServiceCollection services )
         {
-            services.AddDatabase<CurrencyRateContext>(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddDatabase<CurrencyRateContext>( Configuration.GetConnectionString("DefaultConnection") );
         }
     }
 }

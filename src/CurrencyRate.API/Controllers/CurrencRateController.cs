@@ -6,54 +6,68 @@ using System.Linq;
 using CurrencyRate.API.Dto;
 using CurrencyRate.API.Mappers;
 using System.Threading.Tasks;
+using CurrencyRate.Application.Converter;
 
 namespace CurrencyRate.API.Controllers
 {
-    [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
-    [Route("v{version:apiVersion}/currencyRate")]
+    [Route("currencyRate")]
     [Produces("application/json")]
     public class CurrencRateController : Controller
     {
         private readonly ICurrencyRate _currencyRate;
+        private readonly IConverter _converter;
 
-        public CurrencRateController(ICurrencyRate currencyRate)
+        public CurrencRateController(ICurrencyRate currencyRate, IConverter converter)
         {
             _currencyRate = currencyRate;
+            _converter = converter;
         }
 
-        [HttpGet]
+        [HttpGet("getSource")]
         public async Task<List<SourceNameDto>> GetSource()
         {
             //"Ukrainian bank"
             List<string> listOfSource = await _currencyRate.GetSource();
-            return listOfSource.Map();
+            return listOfSource.MapToSourceName();
         }
 
         [HttpGet("getDate")]
-        public List<DateTimeDto> GetDate()//add string source
+        public List<DateTimeDto> GetDate(string source)
         {
-            string source = "Ukrainian bank";
             List<DateTime> listOfDates = _currencyRate.GetAvailableSourceDates(source).ToList();
             return listOfDates.Map();
         }
 
-        [HttpGet("GetCurrencySpecificDateAndSource")]
-        public List<string> GetCurrency()// add string source, DateTime date
+        [HttpGet("GetListCurrencies")]
+        public List<CurrencyNameDto> GetCurrency(string source, string dateToString)
         {
-            string source = "Ukrainian bank";
-            DateTime date = new DateTime(2020,03,20);
-            return _currencyRate.GetSourceCurrencySpecificDate(source, date).ToList();
+            DateTime date = GetCorrectDateTime(dateToString);
+            List<string> currencyList = _currencyRate.GetSourceCurrencySpecificDate(source, date).ToList();
+            return currencyList.MapToCurrencyName();
         }
 
         [HttpGet("GetCurrencyValue")]
-        public CurrencyValueDto GetCurrencyValue()//add string source, DateTime date, sring currency,  decimal value
+        public CurrencyValueDto GetCurrencyValue(string source, string dateToStr, string fromCurrency, string toCurrency, decimal value)
         {
-            DateTime date = new DateTime(2020,03,20);
-            string source = "Ukrainian bank";
-            string currency = "USD";
-            decimal listOfDecimal = _currencyRate.GetСurrencyValue(source, date, currency);
-            return listOfDecimal.Map();
+            DateTime date = GetCorrectDateTime(dateToStr);
+            decimal fromValue = _currencyRate.GetСurrencyValue(source, date, fromCurrency);
+            decimal toValue = _currencyRate.GetСurrencyValue(source, date, toCurrency);
+            decimal answer = _converter.CalculateAmount(fromValue, toValue, value);
+            answer = Math.Round(answer, 3);
+            return answer.Map();
+        }
+
+        private DateTime GetCorrectDateTime(string dateToStr)
+        {
+            try
+            {
+                DateTime date = Convert.ToDateTime(dateToStr);
+                return date;
+            }
+            catch (Exception)
+            {
+                return new DateTime();
+            }
         }
     }
 }

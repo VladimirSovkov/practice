@@ -18,9 +18,9 @@ namespace CurrencyRate.API.Mappers
             }
         }
 
-        //public static List<CurrencyNameDto> Map(this IEnumerable<string> currencyList)
-        //{
-        //    return currencyList == null ? new List<CurrencyNameDto>() : currencyList.ToList().ConvertAll(Map);
-        //}
+        public static List<CurrencyNameDto> MapToCurrencyName(this IEnumerable<string> currencyList)
+        {
+            return currencyList == null ? new List<CurrencyNameDto>() : currencyList.ToList().ConvertAll(Map);
+        }
     }
 }

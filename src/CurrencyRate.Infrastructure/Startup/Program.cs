@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace CurrencyRate.Infrastructure.Startup
 {
@@ -19,6 +20,12 @@ namespace CurrencyRate.Infrastructure.Startup
                 .Build();
 
             IWebHostBuilder builder = WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddNLog();
+                })
                 .UseStartup(typeof(TStartup));
             string argUrls = config["urls"];
             if (argUrls != null)

@@ -18,7 +18,7 @@ namespace CurrencyRate.API.Mappers
             }
         }
 
-        public static List<SourceNameDto> Map(this IEnumerable<string> sourceList)
+        public static List<SourceNameDto> MapToSourceName(this IEnumerable<string> sourceList)
         {
             return sourceList == null ? new List<SourceNameDto>() : sourceList.ToList().ConvertAll(Map);
         }

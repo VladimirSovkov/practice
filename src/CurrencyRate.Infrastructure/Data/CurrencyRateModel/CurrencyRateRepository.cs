@@ -46,6 +46,10 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
         public decimal GetСurrencyValue(string source, DateTime date, string currency)
         {
             var abc = _dbContext.CurrencyRate.Where(s => s.Source == source).Where(d => d.Date == date).FirstOrDefault(c => c.CurrencyId == currency);
+            if (abc == null)
+            {
+                return 0.00m;
+            }
             return abc.Rate;
         }
 
