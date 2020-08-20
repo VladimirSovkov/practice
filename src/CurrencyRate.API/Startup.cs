@@ -9,6 +9,7 @@ using CurrencyRate.Infrastructure.Data;
 using CurrencyRate.Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using CurrencyRate.Connector;
 
 namespace CurrencyRate.API
 {
@@ -42,6 +43,7 @@ namespace CurrencyRate.API
             services
                 .AddBaseServices()
                 .AddApplication()
+                .AddConnector()
                 .AddMvcCore(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options =>
                     {

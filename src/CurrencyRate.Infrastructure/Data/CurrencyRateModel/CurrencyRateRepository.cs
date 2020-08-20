@@ -34,7 +34,7 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
             }
             DateTime date = arrayCurrencyRate[0].Date;
             string source = arrayCurrencyRate[0].Source;
-            var abc = GetCurrencyRate(date, source);
+            //проверка на имеющиеся данные
             if (GetCurrencyRate(date, source) == null)
             {
                 _dbContext.CurrencyRate.AddRange(arrayCurrencyRate);

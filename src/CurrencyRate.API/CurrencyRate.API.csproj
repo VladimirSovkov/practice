@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CurrancyRate.Domain\CurrancyRate.Domain.csproj" />
     <ProjectReference Include="..\CurrencyRate.Application\CurrencyRate.Application.csproj" />
+    <ProjectReference Include="..\CurrencyRate.Connector\CurrencyRate.Connector.csproj" />
     <ProjectReference Include="..\CurrencyRate.Infrastructure\CurrencyRate.Infrastructure.csproj" />
   </ItemGroup>
 

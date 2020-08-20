@@ -6,10 +6,11 @@ namespace CurrencyRate.Connector
 {
     public static class ConnectorBindings
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddConnector(this IServiceCollection services)
         {
             services.AddTransient<IJsonRepository, JsonRepository>();
             services.AddTransient<IXmlRepository, XmlRepository>();
+            services.AddTransient<IConnector, Connecter>();
             return services;
         }
     }

@@ -7,6 +7,8 @@ using CurrencyRate.API.Dto;
 using CurrencyRate.API.Mappers;
 using System.Threading.Tasks;
 using CurrencyRate.Application.Converter;
+using CurrencyRate.Connector;
+using CurrencyRate.Connector.Parser.Models;
 
 namespace CurrencyRate.API.Controllers
 {
@@ -15,12 +17,19 @@ namespace CurrencyRate.API.Controllers
     public class CurrencRateController : Controller
     {
         private readonly ICurrencyRate _currencyRate;
+        private readonly ICurrency _currency;
         private readonly IConverter _converter;
+        private readonly IConnector _connector;
 
-        public CurrencRateController(ICurrencyRate currencyRate, IConverter converter)
+        public CurrencRateController(ICurrencyRate currencyRate, 
+                                        ICurrency currency,
+                                        IConverter converter, 
+                                        IConnector connector)
         {
             _currencyRate = currencyRate;
+            _currency = currency;
             _converter = converter;
+            _connector = connector;
         }
 
         [HttpGet("getSource")]
@@ -55,6 +64,17 @@ namespace CurrencyRate.API.Controllers
             decimal answer = _converter.CalculateAmount(fromValue, toValue, value);
             answer = Math.Round(answer, 3);
             return answer.Map();
+        }
+
+        [HttpGet("LoadData")]
+        public void Test(string date)
+        {
+            var listData = _connector.Load(GetCorrectDateTime(date), Source.UkrainianBank);
+            _currency.AddDataOnSpecificDate(listData.MapToCurrency());
+            _currencyRate.AddArrayElements(listData.MapToCurrencyRate());
+            listData = _connector.Load(GetCorrectDateTime(date), Source.NationalBankKaz);
+            _currency.AddDataOnSpecificDate(listData.MapToCurrency());
+            _currencyRate.AddArrayElements(listData.MapToCurrencyRate());
         }
 
         private DateTime GetCorrectDateTime(string dateToStr)
