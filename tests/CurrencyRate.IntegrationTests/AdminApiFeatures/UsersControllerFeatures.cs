@@ -16,8 +16,11 @@ namespace CurrencyRate.IntegrationTests.AdminApiFeatures
         public async Task GetUsers_Scenario()
         {
             //Given
-            
+            Runner.GivenICreateCurrencyList(Currencies.currencyList);
+            Runner.GivenICreateCurrencyRateList(CurrencyRates.currencyRateList);
+
             //When
+
             //Then
             List<string> sourceNameList = CurrencyRates.currencyRateList
                                             .Select(currencyRate => currencyRate.Source)

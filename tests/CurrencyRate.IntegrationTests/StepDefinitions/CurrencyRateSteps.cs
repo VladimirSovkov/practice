@@ -1,7 +1,8 @@
-﻿using CurrencyRate.API.Dto;
+﻿using CurrancyRate.Domain.CurrencyRateModel;
+using CurrencyRate.API.Dto;
 using CurrencyRate.IntegrationTests.TestKit;
 using FluentAssertions;
-using System;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +10,29 @@ namespace CurrencyRate.IntegrationTests.StepDefinitions
 {
     public static class CurrencyRateSteps
     {
+        public static void GivenICreateCurrencyList(
+            this ITestRunner testRunner,
+            List<Currency> currencies)
+        {
+            using (IServiceScope scope = testRunner.Driver.Services().CreateScope())
+            {
+                ICurrency currency = scope.ServiceProvider.GetService<ICurrency>();
+                currency.AddDataOnSpecificDate(currencies);
+            }
+        }
+
+        public static void GivenICreateCurrencyRateList(
+            this ITestRunner testRunner,
+            List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate> currencyRates
+            )
+        {
+            using (IServiceScope scope = testRunner.Driver.Services().CreateScope())
+            {
+                ICurrencyRate currencyRate = scope.ServiceProvider.GetService<ICurrencyRate>();
+                currencyRate.AddArrayElements(currencyRates);
+            }
+        }
+
         public static async Task ThenHaveSourceApi(
             this ITestRunner testRunner, 
             List<SourceNameDto> expectedDto)
