@@ -1,5 +1,6 @@
 ﻿using CurrancyRate.Domain.CurrencyRateModel;
 using CurrencyRate.API.Dto;
+using CurrencyRate.IntegrationTests.ObjectMothers;
 using CurrencyRate.IntegrationTests.TestKit;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,6 +64,13 @@ namespace CurrencyRate.IntegrationTests.StepDefinitions
         {
             CurrencyValueDto actualDto = await testRunner.Driver.HttpClientGetAsync<CurrencyValueDto>("http://localhost:4401/currencyRate/GetCurrencyValue?source=https://ru.investing.com/currencies/usd-rub&dateToStr=17.08.2020&fromCurrency=RUB&toCurrency=EUR&value=174.46");
             actualDto.Should().BeEquivalentTo(expectedDto);
+        }
+
+        public static async Task ThenHaveLoadData(
+            this ITestRunner testRunner)
+        {
+            var abc = new test { dateToStr = "20.08.2020"};
+            await testRunner.Driver.HttpClientPostAsync("http://localhost:4401/currencyRate/LoadData", abc);
         }
     }
 }

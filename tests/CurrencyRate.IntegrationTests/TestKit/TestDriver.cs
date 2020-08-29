@@ -72,7 +72,6 @@ namespace CurrencyRate.IntegrationTests.TestKit
             IReadOnlyDictionary<string, string> headers = null)
         {
             SetRequestHeaders(headers);
-            //_client.DefaultRequestHeaders.Add();
             var response = await _client.GetAsync(requestUri);
             if (response.StatusCode != statusCode)
             {
@@ -80,6 +79,29 @@ namespace CurrencyRate.IntegrationTests.TestKit
             }
             string responseString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<TResponse>(responseString);
+        }
+
+        public async Task HttpClientPostAsync(
+            string requestUri,
+            object body,
+            HttpStatusCode statusCode = HttpStatusCode.OK,
+            IReadOnlyDictionary<string, string> headers = null)
+        {
+            HttpClient client = new HttpClient();
+            string abc = JsonConvert.SerializeObject(body);
+            RequestBuilder requestBuilder = _server.CreateRequest(requestUri);
+            SetRequestHeaders(requestBuilder, headers);
+            //JsonConvert.SerializeObject(body)
+            var contents = new StringContent(
+                JsonConvert.SerializeObject(body),
+                Encoding.UTF8,
+                "application/json");
+            requestBuilder.And(x => x.Content = contents);
+            var response = await requestBuilder.PostAsync();
+            if (response.StatusCode != statusCode)
+            {
+                throw new HttpRequestException($"Status code: {response.StatusCode}");
+            }
         }
 
         private void SetRequestHeaders(IReadOnlyDictionary<string, string> headers)
@@ -92,6 +114,17 @@ namespace CurrencyRate.IntegrationTests.TestKit
             foreach (string headerName in headers.Keys)
             {
                 _client.DefaultRequestHeaders.Add(headerName, headers[headerName]);
+            }
+        }
+
+        private void SetRequestHeaders(RequestBuilder requestBuilder, IReadOnlyDictionary<string, string> headers)
+        {
+            if (headers != null)
+            {
+                foreach (string headerName in headers.Keys)
+                {
+                    requestBuilder.AddHeader(headerName, headers[headerName]);
+                }
             }
         }
     }

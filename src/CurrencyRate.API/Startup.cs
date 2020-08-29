@@ -9,7 +9,7 @@ using CurrencyRate.Infrastructure.Data;
 using CurrencyRate.Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using CurrencyRate.Connector;
+using CurrencyRate.WebsiteConnector;
 
 namespace CurrencyRate.API
 {
@@ -39,11 +39,12 @@ namespace CurrencyRate.API
         public virtual void AddServices(IServiceCollection services)
         {
             ConfigureDatabase( services );
+            ConfigureWebsiteConnector( services );
             services.AddControllers();
             services
                 .AddBaseServices()
+                .AddWebsiteConnector()
                 .AddApplication()
-                .AddConnector()
                 .AddMvcCore(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options =>
                     {
@@ -58,6 +59,11 @@ namespace CurrencyRate.API
         public virtual void ConfigureDatabase( IServiceCollection services )
         {
             services.AddDatabase<CurrencyRateContext>( Configuration.GetConnectionString("DefaultConnection") );
+        }
+
+        public virtual void ConfigureWebsiteConnector(IServiceCollection services)
+        {
+            services.AddWebsiteConnector(Configuration["UrlToLoadData:NationalBankKaz"], Configuration["UrlToLoadData:UkrainianBank"]);
         }
     }
 }

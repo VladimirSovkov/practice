@@ -16,11 +16,6 @@ namespace CurrencyRate.IntegrationTests
         public async Task Seed()
         {
             //Заполнение БД предустановленными данными
-            //_context.Currency.AddRange(Currencies.currencyList);
-            //_context.SaveChanges();
-
-            //_context.CurrencyRate.AddRange(CurrencyRates.currencyRateList);
-            //await _context.SaveChangesAsync();
         }
     }
 }

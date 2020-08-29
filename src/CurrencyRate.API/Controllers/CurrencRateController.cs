@@ -7,8 +7,10 @@ using CurrencyRate.API.Dto;
 using CurrencyRate.API.Mappers;
 using System.Threading.Tasks;
 using CurrencyRate.Application.Converter;
-using CurrencyRate.Connector;
-using CurrencyRate.Connector.Parser.Models;
+using CurrencyRate.WebsiteConnector.Interface;
+using CurrencyRate.WebsiteConnector.Parse.WebsiteModels;
+using NLog;
+using Microsoft.Extensions.Logging;
 
 namespace CurrencyRate.API.Controllers
 {
@@ -19,23 +21,28 @@ namespace CurrencyRate.API.Controllers
         private readonly ICurrencyRate _currencyRate;
         private readonly ICurrency _currency;
         private readonly IConverter _converter;
-        private readonly IConnector _connector;
+        private readonly IConnectorToKazakhstanBank _connectorToKazakhstanBank;
+        private readonly IConnectorToUkrainianBank _connectorToUkrainianBank;
+        private readonly ILogger<CurrencRateController> _logger;
 
         public CurrencRateController(ICurrencyRate currencyRate, 
                                         ICurrency currency,
-                                        IConverter converter, 
-                                        IConnector connector)
+                                        IConverter converter,
+                                        IConnectorToKazakhstanBank connectorToKazakhstanBank,
+                                        IConnectorToUkrainianBank connectorToUkrainianBank,
+                                        ILogger<CurrencRateController> logger)
         {
             _currencyRate = currencyRate;
             _currency = currency;
             _converter = converter;
-            _connector = connector;
+            _connectorToKazakhstanBank = connectorToKazakhstanBank;
+            _connectorToUkrainianBank = connectorToUkrainianBank;
+            _logger = logger;
         }
 
         [HttpGet("getSource")]
         public async Task<List<SourceNameDto>> GetSource()
         {
-            //"Ukrainian bank"
             List<string> listOfSource = await _currencyRate.GetSource();
             return listOfSource.MapToSourceName();
         }
@@ -66,15 +73,32 @@ namespace CurrencyRate.API.Controllers
             return answer.Map();
         }
 
-        [HttpGet("LoadData")]
-        public void Test(string date)
+        [HttpPost("LoadData")]
+        public IActionResult Test(string dateToStr)
         {
-            var listData = _connector.Load(GetCorrectDateTime(date), Source.UkrainianBank);
-            _currency.AddDataOnSpecificDate(listData.MapToCurrency());
-            _currencyRate.AddArrayElements(listData.MapToCurrencyRate());
-            listData = _connector.Load(GetCorrectDateTime(date), Source.NationalBankKaz);
-            _currency.AddDataOnSpecificDate(listData.MapToCurrency());
-            _currencyRate.AddArrayElements(listData.MapToCurrencyRate());
+            List<UkrainianBankModel> listDataToUkrBank;
+            List<KazakhstanBankModel> listDataToKzBank;
+            try
+            {
+                DateTime date = Convert.ToDateTime(dateToStr);
+                listDataToUkrBank = _connectorToUkrainianBank.LoadData(date);
+                listDataToKzBank = _connectorToKazakhstanBank.LoadData(date);
+            }
+            catch (System.FormatException exception)
+            {
+                _logger.LogWarning("invalid date format. " + exception.Message);
+                return BadRequest();
+            }
+            catch(Exception exception)
+            {
+                _logger.LogError("error in loading data from the site. " + exception.Message);
+                return StatusCode(500);
+            }
+            _currency.AddDataOnSpecificDate(listDataToUkrBank.MapToCurrency());
+            _currencyRate.AddArrayElements(listDataToUkrBank.MapToCurrencyRate());
+            _currency.AddDataOnSpecificDate(listDataToKzBank.MapToCurrency());
+            _currencyRate.AddArrayElements(listDataToKzBank.MapToCurrencyRate());
+            return Ok();
         }
 
         private DateTime GetCorrectDateTime(string dateToStr)
@@ -84,8 +108,9 @@ namespace CurrencyRate.API.Controllers
                 DateTime date = Convert.ToDateTime(dateToStr);
                 return date;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogWarning("invalid date format. " + exception.Message);
                 return new DateTime();
             }
         }

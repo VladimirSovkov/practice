@@ -42,6 +42,8 @@ namespace CurrencyRate.IntegrationTests.AdminApiFeatures
 
             CurrencyValueDto currencyNameDto = new CurrencyValueDto { Value = 174.46m/87.23m };
             await Runner.ThenHaveValueApi(currencyNameDto);
+
+            await Runner.ThenHaveLoadData();
         }
     }
 }

@@ -93,3 +93,13 @@ function GetValueRate()
         });
     }
 }
+
+function PostZapr()
+{
+    var date = document.getElementById('input_post').value;
+    $.ajax({
+        url: 'http://localhost:4401/currencyRate/LoadData',
+        type: 'POST',
+        data: { dateToStr: date}
+    });
+}

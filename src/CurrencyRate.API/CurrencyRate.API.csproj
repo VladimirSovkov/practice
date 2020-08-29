@@ -20,8 +20,8 @@
   <ItemGroup>
     <ProjectReference Include="..\CurrancyRate.Domain\CurrancyRate.Domain.csproj" />
     <ProjectReference Include="..\CurrencyRate.Application\CurrencyRate.Application.csproj" />
-    <ProjectReference Include="..\CurrencyRate.Connector\CurrencyRate.Connector.csproj" />
     <ProjectReference Include="..\CurrencyRate.Infrastructure\CurrencyRate.Infrastructure.csproj" />
+    <ProjectReference Include="..\CurrencyRate.WebsiteConnector\CurrencyRate.WebsiteConnector.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

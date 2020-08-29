@@ -1,27 +1,41 @@
-﻿using CurrancyRate.Domain.CurrencyRateModel;
-using CurrencyRate.Connector.Model;
+﻿using CurrencyRate.WebsiteConnector.Parse.WebsiteModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CurrencyRate.API.Mappers
 {
     public static class CurrencyRateMapper
     {
-        public static CurrancyRate.Domain.CurrencyRateModel.CurrencyRate MapToCurrencyRate(this ConnectorModel connectorModel)
+        public static CurrancyRate.Domain.CurrencyRateModel.CurrencyRate MapToCurrencyRate(this UkrainianBankModel ukrainianBankModel)
         {
             return new CurrancyRate.Domain.CurrencyRateModel.CurrencyRate
             {
-                Rate = connectorModel.Rate,
-                CurrencyId = connectorModel.CurrencyId,
-                Source = connectorModel.Source,
-                Date = connectorModel.Date
+                Rate = ukrainianBankModel.Rate,
+                CurrencyId = ukrainianBankModel.cc,
+                Source = "Ukrainian bank",
+                Date = Convert.ToDateTime(ukrainianBankModel.exchangedate)
             };
         }
-         public static List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate> MapToCurrencyRate(this List<ConnectorModel> connectorModels )
+
+        public static CurrancyRate.Domain.CurrencyRateModel.CurrencyRate MapToCurrencyRate(this KazakhstanBankModel kazakhstanBankModel)
         {
-            return connectorModels == null ? new List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate>() : connectorModels.ToList().ConvertAll(MapToCurrencyRate);
+            return new CurrancyRate.Domain.CurrencyRateModel.CurrencyRate
+            {
+                Rate = kazakhstanBankModel.Rate,
+                CurrencyId = kazakhstanBankModel.CurrencyId,
+                Source = "National Bank KAZ",
+                Date = kazakhstanBankModel.Date
+            };
+        }
+
+        public static List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate> MapToCurrencyRate(this List<UkrainianBankModel> UkrainianBankModel)
+        {
+            return UkrainianBankModel == null ? new List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate>() : UkrainianBankModel.ToList().ConvertAll(MapToCurrencyRate);
+        }
+        public static List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate> MapToCurrencyRate(this List<KazakhstanBankModel> KazakhstanBankModel)
+        {
+            return KazakhstanBankModel == null ? new List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate>() : KazakhstanBankModel.ToList().ConvertAll(MapToCurrencyRate);
         }
     }
 }
