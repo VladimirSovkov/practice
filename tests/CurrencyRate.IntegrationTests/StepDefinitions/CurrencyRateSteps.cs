@@ -69,7 +69,7 @@ namespace CurrencyRate.IntegrationTests.StepDefinitions
         public static async Task ThenHaveLoadData(
             this ITestRunner testRunner)
         {
-            var abc = new test { dateToStr = "20.08.2020"};
+            var abc = new abc { dateToStr = "date" };
             await testRunner.Driver.HttpClientPostAsync("http://localhost:4401/currencyRate/LoadData", abc);
         }
     }

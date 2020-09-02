@@ -73,13 +73,13 @@ namespace CurrencyRate.API.Controllers
         }
 
         [HttpPost("LoadData")]
-        public IActionResult Test(string dateToStr)
+        public IActionResult Test(abc abc)
         {
             List<UkrainianBankModel> listDataToUkrBank;
             List<KazakhstanBankModel> listDataToKzBank;
             try
             {
-                DateTime date = Convert.ToDateTime(dateToStr);
+                DateTime date = Convert.ToDateTime(abc.dateToStr);
                 listDataToUkrBank = _connectorToUkrainianBank.LoadData(date);
                 listDataToKzBank = _connectorToKazakhstanBank.LoadData(date);
             }
