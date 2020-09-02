@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using CurrencyRate.Application.Converter;
 
 namespace CurrencyRate.Application.UnitTests
 {

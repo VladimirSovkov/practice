@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRate.Application", "src\CurrencyRate.Application\CurrencyRate.Application.csproj", "{CCDEAEFF-4F47-44C2-A822-DD7FFB868A68}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrancyRate.Domain", "src\CurrancyRate.Domain\CurrancyRate.Domain.csproj", "{73D3DC6F-5E8E-49CD-9257-9FE33A0FE6E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{904C1E3E-5087-49C9-A655-423302B09249}"
@@ -21,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRate.Application.Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRate.WebsiteConnector", "src\CurrencyRate.WebsiteConnector\CurrencyRate.WebsiteConnector.csproj", "{00D1F9E3-A93E-4F3E-8F3F-CDC50045ACEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRate.WebsiteConnector.UnitTests", "tests\CurrencyRate.WebsiteConnector.UnitTests\CurrencyRate.WebsiteConnector.UnitTests.csproj", "{A7DDAF36-D9C2-4360-BED5-6B3F67D2C94B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRate.WebsiteConnector.UnitTests", "tests\CurrencyRate.WebsiteConnector.UnitTests\CurrencyRate.WebsiteConnector.UnitTests.csproj", "{A7DDAF36-D9C2-4360-BED5-6B3F67D2C94B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CCDEAEFF-4F47-44C2-A822-DD7FFB868A68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCDEAEFF-4F47-44C2-A822-DD7FFB868A68}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCDEAEFF-4F47-44C2-A822-DD7FFB868A68}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCDEAEFF-4F47-44C2-A822-DD7FFB868A68}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73D3DC6F-5E8E-49CD-9257-9FE33A0FE6E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73D3DC6F-5E8E-49CD-9257-9FE33A0FE6E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73D3DC6F-5E8E-49CD-9257-9FE33A0FE6E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -66,7 +60,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CCDEAEFF-4F47-44C2-A822-DD7FFB868A68} = {904C1E3E-5087-49C9-A655-423302B09249}
 		{73D3DC6F-5E8E-49CD-9257-9FE33A0FE6E4} = {904C1E3E-5087-49C9-A655-423302B09249}
 		{839D1703-A423-4620-9561-64F8172EFFA0} = {904C1E3E-5087-49C9-A655-423302B09249}
 		{B97D4A9B-AD62-4AC9-A070-762846C95B41} = {FA7D5DBC-3B39-4D6B-BC8D-425D35909113}

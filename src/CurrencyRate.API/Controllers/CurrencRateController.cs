@@ -6,11 +6,10 @@ using System.Linq;
 using CurrencyRate.API.Dto;
 using CurrencyRate.API.Mappers;
 using System.Threading.Tasks;
-using CurrencyRate.Application.Converter;
 using CurrencyRate.WebsiteConnector.Interface;
 using CurrencyRate.WebsiteConnector.Parse.WebsiteModels;
-using NLog;
 using Microsoft.Extensions.Logging;
+using CurrencyRate.Application.Converter;
 
 namespace CurrencyRate.API.Controllers
 {

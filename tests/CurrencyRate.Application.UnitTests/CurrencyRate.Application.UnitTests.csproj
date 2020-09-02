@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CurrencyRate.Application\CurrencyRate.Application.csproj" />
+    <ProjectReference Include="..\..\src\CurrancyRate.Domain\CurrancyRate.Domain.csproj" />
   </ItemGroup>
 
 </Project>
