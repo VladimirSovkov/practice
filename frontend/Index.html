@@ -15,7 +15,7 @@
                     CurrancyRate
                 </div>
                 <nav class="header_nav">
-                    <a class="header_nav_text" href="file:///D:/2%20course/practice/frontend/Index.html">Home</a>
+                    <a class="header_nav_text" href="">Home</a>
                 </nav>
             </div>
         </div>
@@ -25,24 +25,18 @@
             <form action="" class="parameters">
                 <p class="parameter_headers" id="parameter_headers">Выберите источник</p>
                 <select class="source_selection" id="select_source"></select>
-                <p class="parameter_headers">Выберите год</p>
-                <select class="source_selection" id="select_date"></select>
+                <p class="parameter_headers">Введите дату</p>
+                <input type="date" class="input_value" name="" id="input_date" min="2000-01-01" max=""/>
                 <p class="parameter_headers"> Имеющаяся валюта </p>
                 <select class="source_selection" id="from_currency_selector"></select>
                 <p class="parameter_headers">Нужная валюта</p>
                 <select class="source_selection" id="to_currency_selector"></select>
                 <p class="parameter_headers">Сумма</p>
                 <input type="number" class="input_value" name="" id="rate" value="0"/>
-                <input class="input_button" value="Конвертировать" onclick="GetValueRate()"/>
+                <input type="submit" class="input_button" value="Конвертировать" onclick="GetValueRate()"/>
             </form>
             <div class="result_container">
             </div>
-        </div>
-        <div class="test_post">
-            <form action="" class="post_zapr">
-                <input type="text" class="input_post" id="input_post"/>
-                <input class="input_button" onclick="PostZapr()"/>
-            </form>
         </div>
     </main>
     <footer class="footer">
@@ -50,7 +44,6 @@
             <div class="footer_inner">
                 <p class="footer_text">CurrencyRate</p>
                 <p class="footer_text_test">@TestVersion</p>
-        
             </div>
         </div>
     </footer>

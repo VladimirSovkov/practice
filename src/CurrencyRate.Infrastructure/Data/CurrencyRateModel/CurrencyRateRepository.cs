@@ -48,19 +48,41 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
             var abc = _dbContext.CurrencyRate.Where(s => s.Source == source).Where(d => d.Date == date).FirstOrDefault(c => c.CurrencyId == currency);
             if (abc == null)
             {
-                return 0.00m;
+                return -1;
             }
             return abc.Rate;
         }
 
+        //delete
         public IEnumerable<string> GetSourceCurrencySpecificDate(string source, DateTime date)
         {
             return _dbContext.CurrencyRate.Where(s => s.Source == source).Where(d => d.Date == date).Select(c => c.CurrencyId).Distinct();
+        }
+
+        public IEnumerable<string> GetSourceCurrencyList(string source)
+        {
+            return _dbContext.CurrencyRate
+                    .Where(s => s.Source == source)
+                    .Select(c => c.CurrencyId)
+                    .Distinct();
         }
 
         public Task<List<string>> GetSource()
         {
             return _dbContext.CurrencyRate.Select(s => s.Source).Distinct().ToListAsync();
         }
+
+        public async Task<bool> ThereIsSuchData(string source, DateTime date)
+        { 
+            var listData = await _dbContext.CurrencyRate
+                           .Where (p => p.Source == source)
+                           .FirstOrDefaultAsync(p => p.Date == date);
+            if (listData == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

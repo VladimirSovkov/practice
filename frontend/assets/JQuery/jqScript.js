@@ -1,8 +1,23 @@
-var sourceGlobal;
 
 jQuery(function(){
-    //загрузку даннх с сервера на селектор "Выберите источник"
+    //создание input с значением 'max' = today
+    $(function() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
 
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("input_date").setAttribute("max", today);
+    });
+
+    //загрузку даннх с сервера на селектор "Выберите источник"
     $.ajax({
         url: "http://localhost:4401/currencyRate/getSource",
         success: function (data) {
@@ -11,7 +26,7 @@ jQuery(function(){
             $.each(data, function() {
                 $('#select_source').append(new Option(this.source, this.source));
             })
-            AddDatesInSelect(data[0].source);
+            AddDataToCurrencySelector(data[0].source);
         },
         errore: function()
         {
@@ -20,45 +35,19 @@ jQuery(function(){
     })
 
     $("#select_source").change(function (data){
-        AddDatesInSelect(this.value);
-    })
-
-    $('#select_date').change(function (data){
-        AddDataToCurrencySelector(sourceGlobal, this.value)
+        AddDataToCurrencySelector(this.value)
     })
 });
 
 
-function AddDatesInSelect(source)
-{
-    sourceGlobal = source;
-    $.ajax({
-        url: 'http://localhost:4401/currencyRate/getDate',
-        type: 'GET',
-        data: {source: source},
-        success: function(data){
-            $('#select_date').empty();
-            if (data.length == 0 ){alert('нет данных по датам добавления значений валют')}
-            else
-                {
-                    $.each(data, function() {
-                        //substring(0, this.date)  .length - 9
-                        var str = this.date.substring(0, this.date.length - 10);
-                        $('#select_date').append(new Option(str, str));
-                    });
-                    var date = data[0].date.substring(0, data[0].date.length - 10);
-                    AddDataToCurrencySelector(source, date);
-                };
-        }
-    })
-}
 
-function AddDataToCurrencySelector(source, date)
+
+function AddDataToCurrencySelector(source)
 {
     $.ajax({
         url: 'http://localhost:4401/currencyRate/GetListCurrencies',
         type: 'GET',
-        data: {source: source, dateToString: date},
+        data: {source: source},
         success: function(data){
             $('#to_currency_selector').empty();
             $('#from_currency_selector').empty();
@@ -74,7 +63,7 @@ function AddDataToCurrencySelector(source, date)
 function GetValueRate()
 {
     var source = document.getElementById('select_source').value;
-    var date = document.getElementById('select_date').value;
+    var date = document.getElementById('input_date').value;
     var fromCurrency = document.getElementById('from_currency_selector').value;
     var toCurrency = document.getElementById('to_currency_selector').value;
     var rate = document.getElementById('rate').value;
@@ -83,7 +72,7 @@ function GetValueRate()
     }
     else {
         $.ajax({
-            url: 'http://localhost:4401/currencyRate/GetCurrencyValue',
+            url: 'http://localhost:4401/currencyRate/GetValue',
             type: 'GET',
             data: {source: source, dateToStr: date, fromCurrency: fromCurrency, toCurrency: toCurrency, value: rate},
             success: function (data) {
