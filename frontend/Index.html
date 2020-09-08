@@ -23,6 +23,7 @@
     <main class="main">
         <div class="container">
             <form action="" class="parameters">
+                <p class="error_field" id="loginErrorDataRequired"></p>
                 <p class="parameter_headers" id="parameter_headers">Выберите источник</p>
                 <select class="source_selection" id="select_source"></select>
                 <p class="parameter_headers">Введите дату</p>
@@ -33,9 +34,9 @@
                 <select class="source_selection" id="to_currency_selector"></select>
                 <p class="parameter_headers">Сумма</p>
                 <input type="number" class="input_value" name="" id="rate" value="0"/>
-                <input type="submit" class="input_button" value="Конвертировать" onclick="GetValueRate()"/>
+                <input  class="input_button" value="Конвертировать" onclick="GetValueRate()"/>
             </form>
-            <div class="result_container">
+            <div class="result_container" id="result_container">
             </div>
         </div>
     </main>

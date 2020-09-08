@@ -25,6 +25,7 @@ namespace CurrencyRate.WebsiteConnector
                 new ConnectorToKazakhstanBank(urlKazakhstanBank));
             services.AddSingleton<IConnectorToUkrainianBank, ConnectorToUkrainianBank>(x =>
                 new ConnectorToUkrainianBank(urlUkrainianBank));
+            services.AddScoped<IWebsiteConnector, WebsiteConnector>();
             return services;
         }
     }

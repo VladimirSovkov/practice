@@ -32,7 +32,7 @@ namespace CurrencyRate.API.Mappers
             return ukrainianBankModels == null ? new List<Currency>() : ukrainianBankModels.ToList().ConvertAll(MapToCurrency);
         }
 
-        public static List<Currency> MapToCurrency(this IEnumerable <KazakhstanBankModel> kazakhstanBankModels)
+        public static List<Currency> MapToCurrency(this IEnumerable<KazakhstanBankModel> kazakhstanBankModels)
         {
             return kazakhstanBankModels == null ? new List<Currency>() : kazakhstanBankModels.ToList().ConvertAll(MapToCurrency);
         }

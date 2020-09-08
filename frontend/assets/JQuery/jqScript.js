@@ -28,19 +28,26 @@ jQuery(function(){
             })
             AddDataToCurrencySelector(data[0].source);
         },
-        errore: function()
+        error: function()
         {
-            alert('Errore parse data!');
+            alert('не могу подключиться к серверу ');
         }
     })
 
     $("#select_source").change(function (data){
         AddDataToCurrencySelector(this.value)
-    })
+    });
+
+    $('#input_date').click(function(){
+        $("#input_date").css({"border-color":($('.source_selection').css("border-color")), "border-width":($('.source_selection').css("border-width"))});
+        $('.error_field').text("");
+    });
+
+    $('#rate').click(function(){
+        $("#rate").css({"border-color":($('.source_selection').css("border-color")), "border-width":($('.source_selection').css("border-width"))});
+        $('.error_field').text("");
+    });
 });
-
-
-
 
 function AddDataToCurrencySelector(source)
 {
@@ -67,8 +74,16 @@ function GetValueRate()
     var fromCurrency = document.getElementById('from_currency_selector').value;
     var toCurrency = document.getElementById('to_currency_selector').value;
     var rate = document.getElementById('rate').value;
+    if(date == "")
+    {
+        $('.error_field').text('Введите дату');
+        $("#input_date").css({"border-color":"red", "border-width":"3px"})
+        return;
+    }
     if (rate < 0){
-        alert('Вы ввели отрицательное число');
+        $('.error_field').text('Вы ввели отрицательное число');
+        $("#rate").css({"border-color":"red", "border-width":"3px"})
+        return
     }
     else {
         $.ajax({
@@ -78,17 +93,17 @@ function GetValueRate()
             success: function (data) {
                 $('.result_container').empty();
                 $('.result_container').append('<p class="result_value">' + data.value + '  ' + toCurrency + '</p>')
+            },
+            error: function (jqXHR, exception){
+                var responseText = jqXHR.responseText;
+                if (responseText === "\"invalid date range\"")
+                {
+                    alert('Введена некорректная дата');
+                } else if (responseText === "\"no data for one of the currencies\"") {
+                    alert('Нет курса кнвертации');
+                };
+
             }
         });
     }
-}
-
-function PostZapr()
-{
-    var date = document.getElementById('input_post').value;
-    $.ajax({
-        url: 'http://localhost:4401/currencyRate/LoadData',
-        type: 'POST',
-        data: { dateToStr: date}
-    });
 }

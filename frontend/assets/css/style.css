@@ -46,6 +46,12 @@ header
     text-decoration: none;
 }
 
+.error_field
+{
+    color: red;
+    font-size: 17px;
+}
+
 .parameters
 {
     display: flex;
