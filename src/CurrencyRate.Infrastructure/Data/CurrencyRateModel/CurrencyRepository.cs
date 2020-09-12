@@ -1,4 +1,4 @@
-﻿using CurrancyRate.Domain.CurrencyRateModel;
+﻿using CurrencyRate.Domain.CurrencyRateModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

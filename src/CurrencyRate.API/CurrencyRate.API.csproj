@@ -18,9 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CurrancyRate.Domain\CurrancyRate.Domain.csproj" />
+    <ProjectReference Include="..\CurrencyRate.ConnectorToKazakhstanBank\CurrencyRate.ConnectorToKazakhstanBank.csproj" />
+    <ProjectReference Include="..\CurrencyRate.ConnectorToUkrainianBank\CurrencyRate.ConnectorToUkrainianBank.csproj" />
+    <ProjectReference Include="..\CurrencyRate.Domain\CurrencyRate.Domain.csproj" />
     <ProjectReference Include="..\CurrencyRate.Infrastructure\CurrencyRate.Infrastructure.csproj" />
-    <ProjectReference Include="..\CurrencyRate.WebsiteConnector\CurrencyRate.WebsiteConnector.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

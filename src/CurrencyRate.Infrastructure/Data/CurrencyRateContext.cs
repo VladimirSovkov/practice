@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CurrancyRate.Domain.CurrencyRateModel;
+using CurrencyRate.Domain.CurrencyRateModel;
 
 namespace CurrencyRate.Infrastructure.Data
 {
@@ -10,7 +10,7 @@ namespace CurrencyRate.Infrastructure.Data
         }
 
         public DbSet<Currency> Currency { get; set; }
-        public DbSet<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate> CurrencyRate { get; set; }
+        public DbSet<CurrencyRate.Domain.CurrencyRateModel.CurrencyRate> CurrencyRate { get; set; }
 
 
     }

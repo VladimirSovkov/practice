@@ -6,8 +6,6 @@ using CurrencyRate.IntegrationTests.ObjectMothers;
 using System;
 using System.Linq;
 using CurrencyRate.API.Mappers;
-using CurrencyRate.API.Dto;
-using CurrencyRate.WebsiteConnector;
 
 namespace CurrencyRate.IntegrationTests.AdminApiFeatures
 {

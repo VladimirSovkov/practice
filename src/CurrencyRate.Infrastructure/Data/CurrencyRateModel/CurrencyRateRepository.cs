@@ -1,4 +1,4 @@
-﻿using CurrancyRate.Domain.CurrencyRateModel;
+﻿using CurrencyRate.Domain.CurrencyRateModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
         }
 
         //выдать первый попавшийся год ресурса 
-        public CurrancyRate.Domain.CurrencyRateModel.CurrencyRate GetCurrencyRate(DateTime date, string source) => _dbContext.CurrencyRate.Where(p => p.Source == source).FirstOrDefault(p => p.Date == date);
+        public CurrencyRate.Domain.CurrencyRateModel.CurrencyRate GetCurrencyRate(DateTime date, string source) => _dbContext.CurrencyRate.Where(p => p.Source == source).FirstOrDefault(p => p.Date == date);
 
         //все даты заполнения таблицы CurrencyRate
         public IEnumerable<DateTime> GetAvailableSourceDates(string source)
@@ -26,7 +26,7 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
         }
 
         //добавить в талицу CurrencyRate массив значений 
-        public void AddArrayElements(List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate> arrayCurrencyRate)
+        public void AddArrayElements(List<CurrencyRate.Domain.CurrencyRateModel.CurrencyRate> arrayCurrencyRate)
         {
             if (arrayCurrencyRate.Count() == 0)
             {
@@ -45,12 +45,12 @@ namespace CurrencyRate.Infrastructure.Data.CurrencyRateModel
         //выдать значение влюты определеного источника и даты
         public decimal GetСurrencyValue(string source, DateTime date, string currency)
         {
-            var abc = _dbContext.CurrencyRate.Where(s => s.Source == source).Where(d => d.Date == date).FirstOrDefault(c => c.CurrencyId == currency);
-            if (abc == null)
+            var currencyRate = _dbContext.CurrencyRate.Where(s => s.Source == source).Where(d => d.Date == date).FirstOrDefault(c => c.CurrencyId == currency);
+            if (currencyRate == null)
             {
-                return -1;
+                throw new NullReferenceException($"This object is not in the database. source = {source}, date = {date}, currency = {currency}");
             }
-            return abc.Rate;
+            return currencyRate.Rate;
         }
 
         //delete

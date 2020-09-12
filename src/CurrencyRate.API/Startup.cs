@@ -8,8 +8,9 @@ using System.Reflection;
 using CurrencyRate.Infrastructure.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using CurrencyRate.WebsiteConnector;
-using CurrancyRate.Domain;
+using CurrencyRate.Domain;
+using CurrencyRate.ConnectorToKazakhstanBank;
+using CurrencyRate.ConnectorToUkrainianBank;
 
 namespace CurrencyRate.API
 {
@@ -39,12 +40,12 @@ namespace CurrencyRate.API
         public virtual void AddServices(IServiceCollection services)
         {
             ConfigureDatabase( services );
-            ConfigureWebsiteConnector( services );
             services.AddControllers();
             services
                 .AddDomain()
                 .AddBaseServices()
-                .AddWebsiteConnector()
+                .AddConnectorToKazakhstanBank(Configuration["UrlToLoadData:NationalBankKaz"])
+                .AddConnectorToUkrainianBank(Configuration["UrlToLoadData:UkrainianBank"])
                 .AddMvcCore(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options =>
                     {
@@ -59,11 +60,6 @@ namespace CurrencyRate.API
         public virtual void ConfigureDatabase( IServiceCollection services )
         {
             services.AddDatabase<CurrencyRateContext>( Configuration.GetConnectionString("DefaultConnection") );
-        }
-
-        public virtual void ConfigureWebsiteConnector(IServiceCollection services)
-        {
-            services.AddWebsiteConnector(Configuration["UrlToLoadData:NationalBankKaz"], Configuration["UrlToLoadData:UkrainianBank"]);
         }
     }
 }

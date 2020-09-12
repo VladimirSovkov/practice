@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 
-
 namespace CurrencyRate.IntegrationTests.TestKit
 {
     [Category("SkipWhenLiveUnitTesting")]

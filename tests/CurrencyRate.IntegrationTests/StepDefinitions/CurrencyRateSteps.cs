@@ -1,4 +1,4 @@
-﻿using CurrancyRate.Domain.CurrencyRateModel;
+﻿using CurrencyRate.Domain.CurrencyRateModel;
 using CurrencyRate.API.Dto;
 using CurrencyRate.IntegrationTests.ObjectMothers;
 using CurrencyRate.IntegrationTests.TestKit;
@@ -24,7 +24,7 @@ namespace CurrencyRate.IntegrationTests.StepDefinitions
 
         public static void GivenICreateCurrencyRateList(
             this ITestRunner testRunner,
-            List<CurrancyRate.Domain.CurrencyRateModel.CurrencyRate> currencyRates
+            List<CurrencyRate.Domain.CurrencyRateModel.CurrencyRate> currencyRates
             )
         {
             using (IServiceScope scope = testRunner.Driver.Services().CreateScope())

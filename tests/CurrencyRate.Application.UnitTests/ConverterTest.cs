@@ -3,7 +3,7 @@
 namespace CurrencyRate.Application.UnitTests
 {
     [TestFixture]
-    public class CalculateAmountTest
+    public class CalculateAmountTests
     {
         [Test]
         public void WithPrimesNumbers()

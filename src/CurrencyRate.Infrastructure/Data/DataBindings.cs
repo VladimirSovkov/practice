@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using CurrancyRate.Domain.CurrencyRateModel;
+using CurrencyRate.Domain.CurrencyRateModel;
 using CurrencyRate.Infrastructure.Data.CurrencyRateModel;
 
 namespace CurrencyRate.Infrastructure.Data

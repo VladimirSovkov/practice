@@ -1,4 +1,4 @@
-﻿using CurrancyRate.Domain.CurrencyRateModel;
+﻿using CurrencyRate.Domain.CurrencyRateModel;
 using System.Collections.Generic;
 
 namespace CurrencyRate.IntegrationTests.ObjectMothers

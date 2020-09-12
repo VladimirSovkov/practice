@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using CurrancyRate.Domain.CurrencyRateModel;
+using CurrencyRate.Domain.CurrencyRateModel;
 using System;
 using System.Linq;
 using CurrencyRate.API.Dto;
 using CurrencyRate.API.Mappers;
 using System.Threading.Tasks;
-using CurrencyRate.WebsiteConnector.Interface;
-using CurrencyRate.WebsiteConnector.Parse.WebsiteModels;
 using Microsoft.Extensions.Logging;
-using CurrencyRate.Application.Converter;
-using CurrencyRate.WebsiteConnector;
 using System.Net;
+using CurrencyRate.Domain.DataRecipient.Interface;
+using CurrencyRate.Application.RateConverter;
 
 namespace CurrencyRate.API.Controllers
 {
@@ -21,40 +19,27 @@ namespace CurrencyRate.API.Controllers
     {
         private readonly ICurrencyRate _currencyRate;
         private readonly ICurrency _currency;
-        private readonly IConverter _converter;
-        private readonly IConnectorToKazakhstanBank _connectorToKazakhstanBank;
-        private readonly IConnectorToUkrainianBank _connectorToUkrainianBank;
         private readonly ILogger<CurrencRateController> _logger;
-        private readonly IWebsiteConnector _loadData;
+        private readonly IReceivingCurrency _receivingCurrency;
+        private readonly IConverter _converter;
 
-        public CurrencRateController(ICurrencyRate currencyRate, 
+        public CurrencRateController(ICurrencyRate currencyRate,
                                         ICurrency currency,
-                                        IConverter converter,
-                                        IConnectorToKazakhstanBank connectorToKazakhstanBank,
-                                        IConnectorToUkrainianBank connectorToUkrainianBank,
                                         ILogger<CurrencRateController> logger,
-                                        IWebsiteConnector loadData)
+                                        IReceivingCurrency receivingCurrency,
+                                        IConverter converter)
         {
             _currencyRate = currencyRate;
             _currency = currency;
-            _converter = converter;
-            _connectorToKazakhstanBank = connectorToKazakhstanBank;
-            _connectorToUkrainianBank = connectorToUkrainianBank;
             _logger = logger;
-            _loadData = loadData;
+            _receivingCurrency = receivingCurrency;
+            _converter = converter;
         }
 
         [HttpGet("getSource")]
         public List<SourceNameDto> GetSource()
         {
-            return _loadData.GetSource().MapToSourceName();
-        }
-
-        [HttpGet("getDate")]
-        public List<DateTimeDto> GetDate(string source)
-        {
-            List<DateTime> listOfDates = _currencyRate.GetAvailableSourceDates(source).ToList();
-            return listOfDates.Map();
+            return _receivingCurrency.GetSourcesList().MapToSourceName();
         }
 
         [HttpGet("GetListCurrencies")]
@@ -64,44 +49,41 @@ namespace CurrencyRate.API.Controllers
             return currencyList.MapToCurrencyName();
         }
 
-        [HttpGet("GetCurrencyValue")]
-        public CurrencyValueDto GetCurrencyValue(string source, string dateToStr, string fromCurrency, string toCurrency, decimal value)
+        [HttpPost("GetValue")]
+        public async Task<ActionResult<CurrencyValueDto>> GetValue([FromBody]ParametersForGetTotalValue parameters)
         {
-            DateTime date = GetCorrectDateTime(dateToStr);
-            decimal fromValue = _currencyRate.GetСurrencyValue(source, date, fromCurrency);
-            decimal toValue = _currencyRate.GetСurrencyValue(source, date, toCurrency);
-            decimal answer = _converter.CalculateAmount(fromValue, toValue, value);
-            answer = Math.Round(answer, 3);
-            return answer.Map();
-        }
-
-        [HttpGet("GetValue")]
-        public async Task<ActionResult<CurrencyValueDto>> GetValue(string source, string dateToStr, string fromCurrency, string toCurrency, decimal value)
-        {
-            DateTime date = GetCorrectDateTime(dateToStr);
-            if (date < new DateTime(2000, 01, 01) || date > DateTime.Now)
+            if (parameters.Date > DateTime.Now || parameters.Date <= new DateTime(2000, 01, 01))
             {
-                _logger.LogWarning($"Incorrect date ({date.ToString()})");
+                _logger.LogWarning($"Incorrect date ({parameters.Date})");
                 return BadRequest("invalid date range");
             }
-            if (! await _currencyRate.ThereIsSuchData(source, date))
+            if (!await _currencyRate.ThereIsSuchData(parameters.Source, parameters.Date))
             {
-                var DataDownloadStatus = LoadData(new CurrencyRateLoadParameters { dateToStr = dateToStr, source = source });
+                var DataDownloadStatus = LoadData(new CurrencyRateLoadParameters { Date = parameters.Date, Source = parameters.Source });
                 if (DataDownloadStatus != HttpStatusCode.OK)
                 {
                     return StatusCode(500);
                 }
             }
 
-            decimal fromValue = _currencyRate.GetСurrencyValue(source, date, fromCurrency);
-            decimal toValue = _currencyRate.GetСurrencyValue(source, date, toCurrency);
-            if (fromValue == -1 || toValue == -1)
+            decimal answer = 0;
+            try
             {
-                _logger.LogError($"no data for one of the currencies. fromCurrency = {fromValue}, toCurrency = {toValue}, source = {source}, date = {date}" );
-                return BadRequest("no data for one of the currencies"); 
+                decimal fromValue = _currencyRate.GetСurrencyValue(parameters.Source, parameters.Date, parameters.FromCurrency);
+                decimal toValue = _currencyRate.GetСurrencyValue(parameters.Source, parameters.Date, parameters.ToCurrency);
+                answer = _converter.Convert(fromValue, toValue, parameters.Value);
+            }
+            catch(NullReferenceException exception)
+            {
+                _logger.LogError(exception.Message);
+                return BadRequest("no data for one of the currencies");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception.Message);
+                return StatusCode(500);
             }
 
-            decimal answer = _converter.CalculateAmount(fromValue, toValue, value);
             answer = Math.Round(answer, 3);
             return answer.Map();
         }
@@ -111,23 +93,14 @@ namespace CurrencyRate.API.Controllers
         {
             try
             {
-                DateTime date = Convert.ToDateTime(parameters.dateToStr);
-                if (parameters.source == "Ukrainian bank")
-                {
-                    List<UkrainianBankModel> listDataToUkrBank = _connectorToUkrainianBank.LoadData(date);
-                    _currency.AddDataOnSpecificDate(listDataToUkrBank.MapToCurrency());
-                    _currencyRate.AddArrayElements(listDataToUkrBank.MapToCurrencyRate());
-                }
-                else if (parameters.source == "National Bank KAZ")
-                {
-                    List<KazakhstanBankModel> listDataToKzBank = _connectorToKazakhstanBank.LoadData(date); 
-                    _currency.AddDataOnSpecificDate(listDataToKzBank.MapToCurrency());
-                    _currencyRate.AddArrayElements(listDataToKzBank.MapToCurrencyRate());
-                }
+                var currencyList = _receivingCurrency.GetCurrencies(parameters.Source, parameters.Date);
+                var currencyRateList = _receivingCurrency.GetCurrencyRates(parameters.Source, parameters.Date);
+                _currency.AddDataOnSpecificDate(currencyList);
+                _currencyRate.AddArrayElements(currencyRateList);
             }
-            catch (System.FormatException exception)
+            catch(ArgumentException exception)
             {
-                _logger.LogWarning("invalid date format. " + exception.Message);
+                _logger.LogError("Invalid date entered in the request \"currencyRate.LoadData\" " + exception.Message);
                 return HttpStatusCode.BadRequest;
             }
             catch(Exception exception)
@@ -137,20 +110,6 @@ namespace CurrencyRate.API.Controllers
             }
 
             return HttpStatusCode.OK;
-        }
-
-        private DateTime GetCorrectDateTime(string dateToStr)
-        {
-            try
-            {
-                DateTime date = Convert.ToDateTime(dateToStr);
-                return date;
-            }
-            catch (Exception exception)
-            {
-                _logger.LogWarning("invalid date format. " + exception.Message);
-                return new DateTime();
-            }
         }
     }
 }

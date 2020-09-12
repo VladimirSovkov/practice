@@ -88,8 +88,10 @@ function GetValueRate()
     else {
         $.ajax({
             url: 'http://localhost:4401/currencyRate/GetValue',
-            type: 'GET',
-            data: {source: source, dateToStr: date, fromCurrency: fromCurrency, toCurrency: toCurrency, value: rate},
+            type: 'POST',
+            data: JSON.stringify({source: source, date: date, fromCurrency: fromCurrency, toCurrency: toCurrency, value: rate}),
+            contentType: 'application/json; charset=utf-8',
+            cache: false,
             success: function (data) {
                 $('.result_container').empty();
                 $('.result_container').append('<p class="result_value">' + data.value + '  ' + toCurrency + '</p>')

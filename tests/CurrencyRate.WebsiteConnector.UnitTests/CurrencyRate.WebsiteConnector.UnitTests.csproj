@@ -14,7 +14,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CurrencyRate.WebsiteConnector\CurrencyRate.WebsiteConnector.csproj" />
+    <ProjectReference Include="..\..\src\CurrencyRate.ConnectorToKazakhstanBank\CurrencyRate.ConnectorToKazakhstanBank.csproj" />
+    <ProjectReference Include="..\..\src\CurrencyRate.ConnectorToUkrainianBank\CurrencyRate.ConnectorToUkrainianBank.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\ExcerptKazakhstanBank.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ExcerptUkrainianBank.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\exchange">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

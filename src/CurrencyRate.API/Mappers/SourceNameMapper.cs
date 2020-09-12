@@ -8,14 +8,7 @@ namespace CurrencyRate.API.Mappers
     {
         public static SourceNameDto Map(this string source)
         {
-            if ( source == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new SourceNameDto { Source = source };
-            }
+            return source == null ? null : new SourceNameDto { Source = source };
         }
 
         public static List<SourceNameDto> MapToSourceName(this IEnumerable<string> sourceList)

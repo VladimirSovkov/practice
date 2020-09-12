@@ -1,14 +1,15 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace CurrencyRate.API.Dto
 {
     [DataContract]
     public class CurrencyRateLoadParameters
     {
-        [DataMember(Name = "dateToStr")]
-        public string dateToStr { get; set; }
+        [DataMember(Name = "date")]
+        public DateTime Date { get; set; }
 
         [DataMember(Name = "source")]
-        public string source { get; set; }
+        public string Source { get; set; }
     }
 }
