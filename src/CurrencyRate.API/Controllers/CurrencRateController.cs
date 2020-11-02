@@ -66,7 +66,7 @@ namespace CurrencyRate.API.Controllers
                 }
             }
 
-            decimal answer = 0;
+            decimal answer;
             try
             {
                 decimal fromValue = _currencyRate.GetСurrencyValue(parameters.Source, parameters.Date, parameters.FromCurrency);

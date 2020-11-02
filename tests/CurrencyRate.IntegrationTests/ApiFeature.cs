@@ -2,11 +2,11 @@
 
 namespace CurrencyRate.IntegrationTests
 {
-    public class AdminApiFeature : TestFeature
+    public class ApiFeature : TestFeature
     {
         protected override void SetUp()
         {
-            Driver = new TestDriver(typeof(AdminApiStartup));
+            Driver = new TestDriver(typeof(ApiStartup));
             Runner = new TestRunner(Driver);
             Driver.SeedDatabase();
         }

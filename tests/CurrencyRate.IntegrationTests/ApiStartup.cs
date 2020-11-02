@@ -9,9 +9,9 @@ using CurrencyRate.IntegrationTests.TestKit;
 
 namespace CurrencyRate.IntegrationTests
 {
-    public class AdminApiStartup : API.Startup
+    public class ApiStartup : API.Startup
     {
-        public AdminApiStartup(IConfiguration configuration, IWebHostEnvironment env) : base(configuration, env)
+        public ApiStartup(IConfiguration configuration, IWebHostEnvironment env) : base(configuration, env)
         {
         }
 

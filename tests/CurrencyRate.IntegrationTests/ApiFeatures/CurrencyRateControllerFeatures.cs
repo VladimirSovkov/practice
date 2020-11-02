@@ -9,7 +9,7 @@ using CurrencyRate.API.Mappers;
 
 namespace CurrencyRate.IntegrationTests.AdminApiFeatures
 {
-    public class UsersControllerFeatures : AdminApiFeature
+    public class CurrencyRateControllerFeatures : ApiFeature
     {
         [Test]
         public async Task GetUsers_Scenario()
@@ -23,12 +23,6 @@ namespace CurrencyRate.IntegrationTests.AdminApiFeatures
             //Then
             List<string> sourceNameList = new List<string> { "Ukrainian bank", "National Bank KAZ" };
             await Runner.ThenHaveSourceApi(sourceNameList.MapToSourceName());
-
-            List<DateTime> dateTimeList = CurrencyRates.currencyRateList
-                                            .Select(currencyRate => currencyRate.Date)
-                                            .Distinct()
-                                            .ToList();
-            await Runner.ThenHaveDateApi(dateTimeList.Map());
 
             List<string> currencyNameList = CurrencyRates.currencyRateList
                                                 .Select(currencyRate => currencyRate.CurrencyId)

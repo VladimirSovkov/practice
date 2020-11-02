@@ -29,7 +29,7 @@ namespace CurrencyRate.IntegrationTests.TestKit
                 .Build();
 
             var webHostBuilder = new WebHostBuilder()
-                .UseStartup<AdminApiStartup>()
+                .UseStartup<ApiStartup>()
                 .UseEnvironment(environment)
                 .UseConfiguration(configuration);
 
@@ -77,6 +77,25 @@ namespace CurrencyRate.IntegrationTests.TestKit
             {
                 throw new HttpRequestException($"Status code: {response.StatusCode}");
             }
+            string responseString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<TResponse>(responseString);
+        }
+
+        public async Task<TResponse> HttpClientPostAsync<TResponse>(
+            string requestUri,
+            object body,
+            HttpStatusCode statusCode = HttpStatusCode.OK)
+        {
+            var contents = new StringContent(
+                JsonConvert.SerializeObject(body),
+                Encoding.UTF8,
+                "application/json");
+            var response = await _client.PostAsync(requestUri, contents);
+            if (response.StatusCode != statusCode)
+            {
+                throw new HttpRequestException($"Status code: {response.StatusCode}");
+            }
+
             string responseString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<TResponse>(responseString);
         }

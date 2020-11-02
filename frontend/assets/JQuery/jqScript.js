@@ -104,7 +104,6 @@ function GetValueRate()
                 } else if (responseText === "\"no data for one of the currencies\"") {
                     alert('Нет курса кнвертации');
                 };
-
             }
         });
     }

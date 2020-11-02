@@ -28,6 +28,5 @@ namespace CurrencyRate.ConnectorToKazakhstanBank.Parse.Models
         
         [XmlElement("item")]
         public List<KazakhstanBankRates> CurrenciesList { get; set; }
-
     }
 }

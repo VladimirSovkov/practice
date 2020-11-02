@@ -19,7 +19,7 @@ namespace CurrencyRate.ConnectorToKazakhstanBank.Service
         {
             if (date < new DateTime(2000, 01, 01) || date > DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException($"Incorrect date range for parsing data. date = {date.ToString()}");
+                throw new ArgumentOutOfRangeException($"Incorrect date range for parsing data. date = {date}");
             }
             string url = _url + "?fdate=" + date.ToString("dd.MM.yyyy");
             return kazakhstanBankService.GetData(url);

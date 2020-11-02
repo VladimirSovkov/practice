@@ -42,14 +42,6 @@ namespace CurrencyRate.IntegrationTests.StepDefinitions
             actualDto.Should().BeEquivalentTo(expectedDto);
         }
 
-        public static async Task ThenHaveDateApi(
-            this ITestRunner testRunner,
-            List<DateTimeDto> expectedDto)
-        {
-            List<DateTimeDto> actualDto = await testRunner.Driver.HttpClientGetAsync<List<DateTimeDto>>("currencyRate/getDate?source=https://ru.investing.com/currencies/usd-rub");
-            actualDto.Should().BeEquivalentTo(expectedDto);
-        }
-
         public static async Task ThenHaveCurrencyApi(
             this ITestRunner testRunner,
             List<CurrencyNameDto> expectedDto)
@@ -69,7 +61,7 @@ namespace CurrencyRate.IntegrationTests.StepDefinitions
         public static async Task ThenHaveLoadData(
             this ITestRunner testRunner)
         {
-            var abc = new CurrencyRateLoadParameters { dateToStr = "date" };
+            var abc = new CurrencyRateLoadParameters {};
             await testRunner.Driver.HttpClientPostAsync("http://localhost:4401/currencyRate/LoadData", abc);
         }
     }

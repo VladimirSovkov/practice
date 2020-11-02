@@ -11,7 +11,5 @@ namespace CurrencyRate.Infrastructure.Data
 
         public DbSet<Currency> Currency { get; set; }
         public DbSet<CurrencyRate.Domain.CurrencyRateModel.CurrencyRate> CurrencyRate { get; set; }
-
-
     }
 }

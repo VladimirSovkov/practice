@@ -10,6 +10,5 @@ namespace CurrencyRate.API
 
             program.Run(args);
         }
-
     }
 }

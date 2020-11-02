@@ -27,6 +27,5 @@ namespace CurrencyRate.ConnectorToKazakhstanBank.Service
                 throw new InvalidOperationException(exception.Message);
             }
         }
-
     }
 }

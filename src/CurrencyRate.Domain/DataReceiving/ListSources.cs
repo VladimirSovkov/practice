@@ -2,8 +2,7 @@
 
 namespace CurrencyRate.Domain.DataRecipient
 {
-
-public enum Sources
+    public enum Sources
     {
         [StringValue("Ukrainian bank")]
         UkrainianBank = 0,

@@ -20,7 +20,7 @@ namespace CurrencyRate.ConnectorToUkrainianBank.Service
         {
             if (date < new DateTime(2000, 01, 01) || date > DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException($"Incorrect date range for parsing data. date = {date.ToString()}");
+                throw new ArgumentOutOfRangeException($"Incorrect date range for parsing data. date = {date}");
             }
             string url = _url + "?date=" + date.ToString("yyyyMMdd") + "&json";
             return ukrainianBankService.GetData(url);

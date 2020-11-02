@@ -8,7 +8,6 @@ namespace CurrencyRate.Domain.CurrencyRateModel
         public string CurrencyId { get; set; }
         public string Source { get; set; }
         public DateTime Date { get; set; }
-
         public virtual Currency Currency { get; set; }
     }
 }

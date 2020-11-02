@@ -54,7 +54,7 @@ namespace CurrencyRate.API
                         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;   
                     })
             .AddApplicationPart( Assembly.Load( new AssemblyName( "CurrencyRate.API" )) );
-            services.AddCors();
+             services.AddCors();
         }
 
         public virtual void ConfigureDatabase( IServiceCollection services )
